@@ -15,3 +15,14 @@ WORKDIR /tmp/dump1090
 RUN apk add ncurses-dev
 RUN make BLADERF=no
 RUN cp dump1090 view1090 /usr/local/bin/
+
+# re-create the image without all of the build tools/artefacts
+FROM alpine:latest
+RUN apk add --no-cache libusb ncurses-libs
+COPY --from=0 /usr/local/bin/* /usr/local/bin/
+COPY --from=0 /etc/udev/rules.d/rtl-sdr.rules /etc/udev/rules.d/rtl-sdr.rules
+COPY --from=0 /usr/local/lib/librtlsdr* /usr/local/lib/
+
+# Just expose the BEAST output port
+CMD dump1090 --net --quiet
+EXPOSE 30005
