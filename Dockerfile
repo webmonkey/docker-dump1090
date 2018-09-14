@@ -24,5 +24,5 @@ COPY --from=0 /etc/udev/rules.d/rtl-sdr.rules /etc/udev/rules.d/rtl-sdr.rules
 COPY --from=0 /usr/local/lib/librtlsdr* /usr/local/lib/
 
 # Just expose the BEAST output port
-CMD dump1090 --net --quiet
+CMD dump1090 --net --quiet --fix
 EXPOSE 30005
